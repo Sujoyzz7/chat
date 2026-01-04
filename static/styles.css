@@ -1,0 +1,487 @@
+/* ============================================
+   GLOBAL STYLES & RESET
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --dark-bg: #0f0f1e;
+    --darker-bg: #0a0a14;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b8;
+    --accent-purple: #667eea;
+    --accent-pink: #f093fb;
+    --accent-cyan: #00f2fe;
+    --message-sent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --message-received: rgba(255, 255, 255, 0.08);
+    --shadow-glow: 0 8px 32px rgba(102, 126, 234, 0.2);
+    --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--dark-bg);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(240, 147, 251, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   LOGIN PAGE STYLES
+   ============================================ */
+.login {
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    box-shadow: var(--shadow-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+}
+
+.form h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.in {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.in::placeholder {
+    color: var(--text-secondary);
+}
+
+.in:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.button {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   CHAT PAGE STYLES
+   ============================================ */
+.chat {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--darker-bg);
+    position: relative;
+}
+
+/* Chat Header */
+.chat::before {
+    content: '🌍 World Chat';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.upper {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 90px;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+.m {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+.m::-webkit-scrollbar {
+    width: 8px;
+}
+
+.m::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+}
+
+.m::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 10px;
+}
+
+.m::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* Message Bubbles */
+.us {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 70%;
+    animation: messageSlideIn 0.3s ease-out;
+    align-self: flex-start;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.un {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-purple);
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.un::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.te {
+    background: var(--message-received);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    padding: 0.875rem 1.25rem;
+    border-radius: 18px 18px 18px 4px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* User Join Notification */
+.usconnect {
+    align-self: center;
+    background: rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+    margin: 0.5rem 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Message Input Area */
+.lower {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.lf {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.type {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: 24px;
+    padding: 1rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    resize: none;
+    min-height: 50px;
+    max-height: 120px;
+}
+
+.type::placeholder {
+    color: var(--text-secondary);
+}
+
+.type:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.send {
+    width: 56px;
+    height: 56px;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    flex-shrink: 0;
+}
+
+.send:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+.send:active {
+    transform: scale(0.95) rotate(0deg);
+}
+
+.svg {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .form {
+        padding: 2rem 1.5rem;
+    }
+
+    .form h1 {
+        font-size: 1.75rem;
+    }
+
+    .chat::before {
+        height: 60px;
+        font-size: 1.25rem;
+    }
+
+    .upper {
+        padding-top: 80px;
+    }
+
+    .m {
+        padding: 1rem;
+    }
+
+    .us {
+        max-width: 85%;
+    }
+
+    .te {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .lower {
+        padding: 1rem;
+    }
+
+    .type {
+        font-size: 0.95rem;
+        padding: 0.875rem 1.25rem;
+    }
+
+    .send {
+        width: 50px;
+        height: 50px;
+    }
+
+    .svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login {
+        padding: 1.5rem;
+    }
+
+    .form {
+        padding: 2rem 1.25rem;
+        gap: 1.5rem;
+    }
+
+    .form h1 {
+        font-size: 1.5rem;
+    }
+
+    .m {
+        padding: 0.75rem;
+    }
+
+    .us {
+        max-width: 90%;
+    }
+}
+
+/* ============================================
+   UTILITY ANIMATIONS
+   ============================================ */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Loading State */
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}

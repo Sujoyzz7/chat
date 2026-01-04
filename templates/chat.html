@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>World Chat | Live Room</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <div class="chat">
+        <div class="upper">
+            <div class="m" id="m">
+                <!-- Messages will appear here -->
+                <div class="usconnect">Connecting to global server...</div>
+            </div>
+        </div>
+
+        <div class="lower">
+            <form class="lf" id="form" onsubmit="return false;">
+                <input class="type" required name="message" id="message" placeholder="Type a message..."
+                    autocomplete="off">
+                <button class="send" id="sendBtn" type="submit">
+                    <svg class="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        const socketio = io();
+        const messageContainer = document.getElementById("m");
+        const chatForm = document.getElementById("form");
+        const messageInput = document.getElementById("message");
+        const currentUsername = "{{ username }}";
+
+        // Utility to scroll to bottom
+        const scrollToBottom = () => {
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        };
+
+        socketio.on('connect', () => {
+            // Remove the 'Connecting...' message if exists
+            const connMsg = document.querySelector('.usconnect');
+            if (connMsg && connMsg.innerText.includes('Connecting')) {
+                connMsg.remove();
+            }
+            socketio.emit('status', { data: 'connected' });
+        });
+
+        chatForm.onsubmit = (e) => {
+            e.preventDefault();
+            const text = messageInput.value.trim();
+            if (text) {
+                socketio.emit("send", { u: text });
+                messageInput.value = "";
+                messageInput.focus();
+            }
+        };
+
+        socketio.on("restatus", (data) => {
+            const joinMsg = document.createElement("div");
+            joinMsg.classList.add("usconnect");
+            joinMsg.innerHTML = `<span>⚡</span> <strong>${data.user_name}</strong> joined the room`;
+            messageContainer.appendChild(joinMsg);
+            scrollToBottom();
+        });
+
+        socketio.on("recive", (data) => {
+            const isMe = data.name.startsWith(currentUsername);
+
+            const messageWrapper = document.createElement("div");
+            messageWrapper.classList.add("us");
+            if (isMe) messageWrapper.style.alignSelf = "flex-end";
+            if (isMe) messageWrapper.style.maxWidth = "70%";
+
+            const nameElement = document.createElement("div");
+            nameElement.classList.add("un");
+            nameElement.innerText = data.name.replace(":- ", "");
+
+            // Generate a consistent color for the user based on their name
+            const hash = data.name.split('').reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+            const hue = Math.abs(hash % 360);
+            nameElement.style.color = `hsl(${hue}, 70%, 75%)`;
+
+            const textElement = document.createElement("div");
+            textElement.classList.add("te");
+            textElement.innerText = data.u;
+
+            if (isMe) {
+                textElement.style.background = "var(--message-sent)";
+                textElement.style.borderRadius = "18px 18px 4px 18px";
+                nameElement.style.paddingLeft = "0";
+                nameElement.style.paddingRight = "1rem";
+                nameElement.style.textAlign = "right";
+                nameElement.style.flexDirection = "row-reverse";
+            }
+
+            messageWrapper.appendChild(nameElement);
+            messageWrapper.appendChild(textElement);
+            messageContainer.appendChild(messageWrapper);
+
+            scrollToBottom();
+        });
+
+        // Focus input on load
+        window.onload = () => messageInput.focus();
+    </script>
+</body>
+
+</html>
